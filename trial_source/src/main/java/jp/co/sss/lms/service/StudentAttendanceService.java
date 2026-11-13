@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -337,21 +335,16 @@ public class StudentAttendanceService {
 	}
 
 	/**
-	 * TODO: 
-	 * @throws ParseException 
-	 * 
+	 * @return Boolean 過去の勤怠に未入力があるか
+	 * @throws ParseException
 	 */
 	public Boolean notEnterCheck() throws ParseException {
-		// TODO: 返却値の変更
+		// 返却値の変更
 		Date now = new Date();
 		Integer count = tStudentAttendanceMapper.notEnterCount(
 					loginUserDto.getLmsUserId(),
 					Constants.DB_FLG_FALSE,
 					now);
-		/** ロガー */
-		final Logger log = LoggerFactory.getLogger(StudentAttendanceService.class);
-		log.info("notEnterCheck().count = "+ count);
-
 		if (count > 0) {
 			return true;
 		}else {

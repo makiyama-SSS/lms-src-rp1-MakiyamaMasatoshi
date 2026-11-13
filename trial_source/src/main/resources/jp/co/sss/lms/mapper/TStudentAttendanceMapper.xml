@@ -86,7 +86,7 @@
 		WHERE student_attendance_id = #{studentAttendanceId}
 	</update>
 	
-	<!-- TODO: 勤怠情報（受講生入力）未入力件数取得 -->
+	<!-- 勤怠情報（受講生入力）未入力件数取得 -->
 	
 	<select id="notEnterCount" parameterType="jp.co.sss.lms.entity.TStudentAttendance">
 		SELECT COUNT(*)

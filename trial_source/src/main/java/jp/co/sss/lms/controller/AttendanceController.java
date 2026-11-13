@@ -3,8 +3,6 @@ package jp.co.sss.lms.controller;
 import java.text.ParseException;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,16 +47,12 @@ public class AttendanceController {
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
 
-		// TODO: 過去日の勤怠未入力チェック
+		// 過去日の勤怠未入力チェック
 		try {
 				Boolean isNotEnterCheck = studentAttendanceService.notEnterCheck();
-				/** ロガー */
-				final Logger log = LoggerFactory.getLogger(AttendanceController.class);
-				log.info("isNotEnterCheck"+isNotEnterCheck.toString());
-				// TODO: 結果を画面へ連携
+				// 結果を画面へ連携
 				model.addAttribute("isNotEnterCheck", isNotEnterCheck);
 		} catch (ParseException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 
