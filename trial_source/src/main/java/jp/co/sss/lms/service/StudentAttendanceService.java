@@ -334,4 +334,22 @@ public class StudentAttendanceService {
 		return messageUtil.getMessage(Constants.PROP_KEY_ATTENDANCE_UPDATE_NOTICE);
 	}
 
+	/**
+	 * @return Boolean 過去の勤怠に未入力があるか
+	 * @throws ParseException
+	 */
+	public Boolean notEnterCheck() throws ParseException {
+		// 返却値の変更
+		Date now = new Date();
+		Integer count = tStudentAttendanceMapper.notEnterCount(
+					loginUserDto.getLmsUserId(),
+					Constants.DB_FLG_FALSE,
+					now);
+		if (count > 0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
 }
