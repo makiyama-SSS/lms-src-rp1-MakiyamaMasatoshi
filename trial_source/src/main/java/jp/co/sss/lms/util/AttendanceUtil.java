@@ -143,6 +143,8 @@ public class AttendanceUtil {
 			String hour;
 				hour = String.valueOf(i) ;
 				map.put(i, hour);
+				
+				i = i + 1;
 		}
 		return map;
 	}
@@ -158,6 +160,8 @@ public class AttendanceUtil {
 			String hour;
 				hour = String.valueOf(i) ;
 				map.put(i, hour);
+				
+				i = i + 1;
 		}
 		return map;
 	}
