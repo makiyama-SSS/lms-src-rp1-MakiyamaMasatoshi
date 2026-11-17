@@ -1,6 +1,7 @@
 package jp.co.sss.lms.util;
 
 import java.text.ParseException;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
@@ -169,21 +170,29 @@ public class AttendanceUtil {
 	/**
 	 * 時間(時)の切り出し
 	 * @param time
-	 * @return 切り出した時間(時)
+	 * @return Integer 切り出した時間(時)
 	 */
 	public Integer getHour(String time) {
-		Integer hour = Integer.valueOf(time) / 60;
-		return Integer.valueOf(hour);
+		if (time == null || time.isEmpty()) {
+			return 0;
+		}
+		LocalTime parsedTime = LocalTime.parse(time);
+		Integer hour = parsedTime.getHour();
+		return hour;
 	}
 	
 	/**
 	 * 時間(分)の切り出し
 	 * @param time 
-	 * @return 切り出した時間(分)
+	 * @return Integer 切り出した時間(分)
 	 */
 	public Integer getMinute(String time) {
-		Integer minute = Integer.valueOf(time) % 60;
-		return Integer.valueOf(minute);
+		if (time == null || time.isEmpty()) {
+			return 0;
+		}
+		LocalTime parsedTime = LocalTime.parse(time);
+		Integer minute = parsedTime.getMinute();
+		return minute;
 	}
 	
 	/**
