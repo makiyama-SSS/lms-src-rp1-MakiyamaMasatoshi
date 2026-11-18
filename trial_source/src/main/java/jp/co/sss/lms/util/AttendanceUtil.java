@@ -142,7 +142,7 @@ public class AttendanceUtil {
 		map.put(null, "");
 		for (int i = 0; i < 24;) {
 			String hour;
-				hour = String.valueOf(i) ;
+				hour = String.format("%02d", i);
 				map.put(i, hour);
 				
 				i = i + 1;
@@ -159,7 +159,7 @@ public class AttendanceUtil {
 		map.put(null, "");
 		for (int i = 0; i < 60;) {
 			String hour;
-				hour = String.valueOf(i) ;
+				hour = String.format("%02d", i);
 				map.put(i, hour);
 				
 				i = i + 1;
@@ -174,7 +174,7 @@ public class AttendanceUtil {
 	 */
 	public Integer getHour(String time) {
 		if (time == null || time.isEmpty()) {
-			return 0;
+			return null;
 		}
 		LocalTime parsedTime = LocalTime.parse(time);
 		Integer hour = parsedTime.getHour();
@@ -188,7 +188,7 @@ public class AttendanceUtil {
 	 */
 	public Integer getMinute(String time) {
 		if (time == null || time.isEmpty()) {
-			return 0;
+			return null;
 		}
 		LocalTime parsedTime = LocalTime.parse(time);
 		Integer minute = parsedTime.getMinute();
