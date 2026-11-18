@@ -257,7 +257,6 @@ public class StudentAttendanceService {
 			}
 			if (attendanceManagementDto.getBlankTime() != null) {
 				dailyAttendanceForm.setBlankTime(attendanceManagementDto.getBlankTime());
-				// NOTE: Task.26 参考部分 Util利用
 				dailyAttendanceForm.setBlankTimeValue(String.valueOf(
 						attendanceUtil.calcBlankTime(attendanceManagementDto.getBlankTime())));
 			}
