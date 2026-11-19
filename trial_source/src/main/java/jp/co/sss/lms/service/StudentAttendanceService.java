@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
@@ -381,5 +382,44 @@ public class StudentAttendanceService {
 			return false;
 		}
 		
+	}
+	/**
+	 * TODO: Task.27 勤怠入力チェック
+	 */
+	public static void updateInputCheck(
+			AttendanceForm attendanceForm,
+			BindingResult result
+			) {
+//		[loop] DailyAttendanceForm ごとにチェックを実施。 
+		for (DailyAttendanceForm dailyAttendanceForm : attendanceForm.getAttendanceList()) {
+//	    * 備考の文字数チェック（100文字以内）。 
+			if (dailyAttendanceForm.getNote().length() > 100) {
+				
+			}
+//	    * 時刻の「時」だけ、「分」だけといった片側未入力チェック。
+			if (dailyAttendanceForm.getTrainingStartTimeHour() != null &&
+					dailyAttendanceForm.getTrainingStartTimeMinute() != null) {
+				
+			}
+			if (dailyAttendanceForm.getTrainingEndTimeHour() != null &&
+					dailyAttendanceForm.getTrainingEndTimeMinute() != null) {
+				
+			}
+//	    * 「出勤なし、退勤あり」の矛盾チェック。  
+//			if ()
+//	    * 「出勤・退勤ともに未入力、中抜け時間あり」の矛盾チェック。
+//			if
+//	    * [if エラーがなければ] 出勤時間・退勤時間の「両方に入力がある場合のみ」、出勤時刻 ＞ 退勤時刻 になっていないか比較チェック。
+			if(result.hasErrors()) {
+				
+			}
+//	    * [if 中抜け時間が入力されている場合] 出退勤の差分から計算される最大受講時間よりも中抜け時間が長くないかチェック。
+			Integer startTime = dailyAttendanceForm.getTrainingStartTimeHour() * 60 + dailyAttendanceForm.getTrainingStartTimeMinute();
+			Integer endTime = dailyAttendanceForm.getTrainingEndTimeHour() * 60 + dailyAttendanceForm.getTrainingEndTimeMinute();
+			if ( dailyAttendanceForm.getBlankTime() > ( startTime - endTime )) {
+				
+			}
+//	[loop end]
+		}
 	}
 }
