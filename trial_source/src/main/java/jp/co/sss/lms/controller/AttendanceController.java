@@ -150,6 +150,19 @@ public class AttendanceController {
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
 
+		// TODO: Task.27 入力チェックと遷移ハンドリング
+		// StudentAttendanceService#updateInputCheck(AttendanceForm, BindingResult)}を呼び出し、エラーがある場合にBindingResultを更新する。
+		StudentAttendanceService.updateInputCheck(attendanceForm, result);
+		
+		// [BindingResult#hasErrors()}がtrueの場合]
+		if (result.hasErrors()) {
+			// attendanceFormに以下をセットする
+			//・AttendanceForm#setBlankTimes(java.util.LinkedHashMap)} を呼び出し、中抜け時間 {@link AttendanceUtil#setBlankTime()をセットする。
+			//・AttendanceForm#setHourMap(java.util.LinkedHashMap)} を呼び出し、プルダウン用の時間マップ AttendanceUtil#getHourMap()}をセットする。
+			//・AttendanceForm#setMinuteMap(java.util.LinkedHashMap)} を呼び出し、プルダウン用の分マップAttendanceUtil#getMinuteMap() をセットする
+			//・"勤怠更新画面"へ戻る
+			return "attendance/update";
+		}
 		return "attendance/detail";
 	}
 
