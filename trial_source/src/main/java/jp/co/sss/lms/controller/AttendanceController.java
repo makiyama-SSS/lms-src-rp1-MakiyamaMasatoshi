@@ -139,7 +139,7 @@ public class AttendanceController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
-	public String complete(AttendanceForm attendanceForm, Model model, BindingResult result)
+	public String complete(AttendanceForm attendanceForm, BindingResult result, Model model)
 			throws ParseException {
 		// TODO: Task.27 入力チェックと遷移ハンドリング
 		// StudentAttendanceService#updateInputCheck(AttendanceForm, BindingResult)}を呼び出し、エラーがある場合にBindingResultを更新する。
@@ -151,10 +151,7 @@ public class AttendanceController {
 			//・AttendanceForm#setBlankTimes(java.util.LinkedHashMap)} を呼び出し、中抜け時間 {@link AttendanceUtil#setBlankTime()をセットする。
 			//・AttendanceForm#setHourMap(java.util.LinkedHashMap)} を呼び出し、プルダウン用の時間マップ AttendanceUtil#getHourMap()}をセットする。
 			//・AttendanceForm#setMinuteMap(java.util.LinkedHashMap)} を呼び出し、プルダウン用の分マップAttendanceUtil#getMinuteMap() をセットする
-			result.reject(
-	                "form.invalid",
-	                "入力内容に不備があります。確認してください。"
-	            );
+
 			//・"勤怠更新画面"へ戻る
 			return "attendance/update";
 		}
