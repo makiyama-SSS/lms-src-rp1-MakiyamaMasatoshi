@@ -14,6 +14,7 @@ import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
+import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
 
 /**
@@ -27,6 +28,8 @@ public class AttendanceController {
 
 	@Autowired
 	private StudentAttendanceService studentAttendanceService;
+	@Autowired
+	private AttendanceUtil attendanceUtil;
 	@Autowired
 	private LoginUserDto loginUserDto;
 
@@ -141,16 +144,15 @@ public class AttendanceController {
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
 	public String complete(AttendanceForm attendanceForm, BindingResult result, Model model)
 			throws ParseException {
-		// TODO: Task.27 入力チェックと遷移ハンドリング
-		// StudentAttendanceService#updateInputCheck(AttendanceForm, BindingResult)}を呼び出し、エラーがある場合にBindingResultを更新する。
 		studentAttendanceService.updateInputCheck(attendanceForm, result);
 		
-		// [BindingResult#hasErrors()}がtrueの場合]
 		if (result.hasErrors()) {
-			// attendanceFormに以下をセットする（入力していた値が入ったまま元の画面に戻りたい）
-			//・AttendanceForm#setBlankTimes(java.util.LinkedHashMap)} を呼び出し、中抜け時間 {@link AttendanceUtil#setBlankTime()をセットする。
-			//・AttendanceForm#setHourMap(java.util.LinkedHashMap)} を呼び出し、プルダウン用の時間マップ AttendanceUtil#getHourMap()}をセットする。
-			//・AttendanceForm#setMinuteMap(java.util.LinkedHashMap)} を呼び出し、プルダウン用の分マップAttendanceUtil#getMinuteMap() をセットする
+			//プルダウン用の時間マップをセット
+			attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
+			attendanceForm.setTrainingStartTimeHours(attendanceUtil.getHourMap());
+			attendanceForm.setTrainingEndTimeHours(attendanceUtil.getHourMap());
+			attendanceForm.setTrainingStartTimeMinutes(attendanceUtil.getMinuteMap());
+			attendanceForm.setTrainingEndTimeMinutes(attendanceUtil.getMinuteMap());
 
 			//・"勤怠更新画面"へ戻る
 			return "attendance/update";
