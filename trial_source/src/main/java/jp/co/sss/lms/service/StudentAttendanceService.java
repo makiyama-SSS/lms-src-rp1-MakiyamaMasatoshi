@@ -438,8 +438,18 @@ public class StudentAttendanceService {
 				int startMinutes = dailyAttendanceForm.getTrainingStartTimeHour() * 60 + dailyAttendanceForm.getTrainingStartTimeMinute();
 				int endMinutes = dailyAttendanceForm.getTrainingEndTimeHour() * 60 + dailyAttendanceForm.getTrainingEndTimeMinute();
 				
+				String formattedStartTime = String.format(
+						"%02d:%02d",
+						dailyAttendanceForm.getTrainingStartTimeHour(),
+						dailyAttendanceForm.getTrainingStartTimeMinute());
+				
+				String formattedEndTime = String.format(
+						"%02d:%02d",
+						dailyAttendanceForm.getTrainingEndTimeHour(),
+						dailyAttendanceForm.getTrainingEndTimeMinute());
+				
 				if (endMinutes < startMinutes) {
-					result.addError(new FieldError(result.getObjectName(), "onlyBlankTimeError",messageUtil.getMessage("attendance.trainingTimeRange", new String[] {dailyAttendanceForm.getTrainingStartTime()})));
+					result.addError(new FieldError(result.getObjectName(), "onlyBlankTimeError",messageUtil.getMessage("attendance.trainingTimeRange", new String[] {formattedStartTime,formattedEndTime})));
 				}
 			}
 //	    * [if 中抜け時間が入力されている場合] 受講時間よりも中抜け時間が長くないか
@@ -449,7 +459,7 @@ public class StudentAttendanceService {
 				int workSpanMinutes = endMinutes - startMinutes;
 				
 				if ( dailyAttendanceForm.getBlankTime() > workSpanMinutes) {
-					result.addError(new FieldError(result.getObjectName(), "",messageUtil.getMessage("attendance.blankTimeError")));
+					result.addError(new FieldError(result.getObjectName(), "overBlankTimeError",messageUtil.getMessage("attendance.blankTimeError")));
 				}
 			}
 		}
