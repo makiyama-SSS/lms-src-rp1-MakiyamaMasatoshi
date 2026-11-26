@@ -55,6 +55,7 @@
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
+								<!-- TODO: Task.28 ボタンの設置-->
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingStartTimeHour|" class="form-control">
 										<option th:each="trainingStartTimeHour : ${attendanceForm.trainingStartTimeHours}" th:value="${trainingStartTimeHour.key}" th:inlne="text" class="form-control" 
@@ -123,6 +124,10 @@
       event.preventDefault();
     }
   });
+  
+  // TODO: Task.28 ボタンに設定する処理
+  // ボタン情報取得しつつaddEventListener付与
+  // 各セレクトボックスに自動設定
 });
 		</script>
 </body>
