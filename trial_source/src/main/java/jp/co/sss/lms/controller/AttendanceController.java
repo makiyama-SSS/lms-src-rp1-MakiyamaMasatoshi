@@ -154,6 +154,7 @@ public class AttendanceController {
 			attendanceForm.setTrainingStartTimeMinutes(attendanceUtil.getMinuteMap());
 			attendanceForm.setTrainingEndTimeMinutes(attendanceUtil.getMinuteMap());
 
+			model.addAttribute("attendanceForm", attendanceForm);
 			//・"勤怠更新画面"へ戻る
 			return "attendance/update";
 		}

@@ -54,5 +54,12 @@ public class DailyAttendanceForm {
 	private String courseName;
 	/** インデックス */
 	private String index;
+	/** 入力項目それぞれのエラー用 */
+	private boolean trainingStartTimeHourError;
+	private boolean trainingStartTimeMinuteError;
+	private boolean trainingEndTimeHourError;
+	private boolean trainingEndTimeMinuteError;
+	private boolean blankTimeError;
+	private boolean noteError;
 
 }
