@@ -14,6 +14,7 @@ import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
+import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
 
 /**
@@ -27,6 +28,8 @@ public class AttendanceController {
 
 	@Autowired
 	private StudentAttendanceService studentAttendanceService;
+	@Autowired
+	private AttendanceUtil attendanceUtil;
 	@Autowired
 	private LoginUserDto loginUserDto;
 
@@ -139,8 +142,21 @@ public class AttendanceController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
-	public String complete(AttendanceForm attendanceForm, Model model, BindingResult result)
+	public String complete(AttendanceForm attendanceForm, BindingResult result, Model model)
 			throws ParseException {
+		studentAttendanceService.updateInputCheck(attendanceForm, result);
+		
+		if (result.hasErrors()) {
+			//プルダウン用の時間マップをセット
+			attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
+			attendanceForm.setTrainingStartTimeHours(attendanceUtil.getHourMap());
+			attendanceForm.setTrainingEndTimeHours(attendanceUtil.getHourMap());
+			attendanceForm.setTrainingStartTimeMinutes(attendanceUtil.getMinuteMap());
+			attendanceForm.setTrainingEndTimeMinutes(attendanceUtil.getMinuteMap());
+
+			//・"勤怠更新画面"へ戻る
+			return "attendance/update";
+		}
 
 		// 更新
 		String message = studentAttendanceService.update(attendanceForm);

@@ -21,7 +21,15 @@
 	<div class="row">
 		<div class="bs-component col-sm-12">
 
-			<form th:action="@{/attendance/update}" method="post">
+			<form id="attendanceForm" th:action="@{/attendance/update}" method="post">
+				<!-- エラーメッセージの挿入 -->
+				<th:block th:object="${attendanceForm}">
+					<ul th:if="${#fields.hasErrors('*')}">
+						<li th:each="err : ${#fields.errors('*')}" class="help-inline error" style="display: block;">
+							*&nbsp;[[${err}]]
+						</li>
+				  </ul>
+				</th:block>
 				<table class="table table-hover dataTable no-footer">
 					<thead>
 						<tr>
@@ -102,5 +110,20 @@
 		</div>
 	</div>
 
+	<!-- Task.27 ダイアログの表示 scriptタグ埋め込み-->
+	<script type="text/javascript" th:inline="javascript">
+		document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("attendanceForm");
+  if (!form) return;
+
+  form.addEventListener("submit", function (event) {
+    const isConfirmed = window.confirm("更新します。よろしいですか？");
+
+    if (!isConfirmed) {
+      event.preventDefault();
+    }
+  });
+});
+		</script>
 </body>
 </html>
