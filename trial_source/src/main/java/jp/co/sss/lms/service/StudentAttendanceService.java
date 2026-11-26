@@ -403,20 +403,33 @@ public class StudentAttendanceService {
 			if (dailyAttendanceForm.getNote().length() > 100) {
 				String note = "備考";
 				String length = "100";
+				dailyAttendanceForm.setNoteError(true);
 				result.addError(new FieldError(result.getObjectName(), "note", messageUtil.getMessage("maxlength", new String[] {note ,length})));
 			}
 //	    * 時刻の「時」だけ、「分」だけといった片側未入力チェック。（出勤時間）
 			if (
-				dailyAttendanceForm.getTrainingStartTimeHour() != null && dailyAttendanceForm.getTrainingStartTimeMinute() == null ||
-				dailyAttendanceForm.getTrainingStartTimeHour() == null && dailyAttendanceForm.getTrainingStartTimeMinute() != null
-			) {
+				dailyAttendanceForm.getTrainingStartTimeHour() != null && dailyAttendanceForm.getTrainingStartTimeMinute() == null 
+				) {
+				dailyAttendanceForm.setTrainingStartTimeMinuteError(true);
 				result.addError(new FieldError(result.getObjectName(), "startTimeError",messageUtil.getMessage("input.invalid", new String[] {"出勤時間"})));
 			}
+			if (
+					dailyAttendanceForm.getTrainingStartTimeHour() == null && dailyAttendanceForm.getTrainingStartTimeMinute() != null
+				) {
+					dailyAttendanceForm.setTrainingStartTimeHourError(true);
+					result.addError(new FieldError(result.getObjectName(), "startTimeError",messageUtil.getMessage("input.invalid", new String[] {"出勤時間"})));
+				}
 //		* 時刻の「時」だけ、「分」だけといった片側未入力チェック。（退勤時間）
 			if (
-					dailyAttendanceForm.getTrainingEndTimeHour() != null && dailyAttendanceForm.getTrainingEndTimeMinute() == null ||
+					dailyAttendanceForm.getTrainingEndTimeHour() != null && dailyAttendanceForm.getTrainingEndTimeMinute() == null 
+				) {
+					dailyAttendanceForm.setTrainingEndTimeMinuteError(true);
+					result.addError(new FieldError(result.getObjectName(), "endTimeError",messageUtil.getMessage("input.invalid", new String[] {"退勤時間"})));
+				}
+			if (
 					dailyAttendanceForm.getTrainingEndTimeHour() == null && dailyAttendanceForm.getTrainingEndTimeMinute() != null
 				) {
+					dailyAttendanceForm.setTrainingEndTimeHourError(true);
 					result.addError(new FieldError(result.getObjectName(), "endTimeError",messageUtil.getMessage("input.invalid", new String[] {"退勤時間"})));
 				}
 			
@@ -426,10 +439,18 @@ public class StudentAttendanceService {
 			boolean hasBlankTime = dailyAttendanceForm.getBlankTime() != null;
 //	    * 「出勤なし、退勤あり」の矛盾チェック。  
 			if (!hasStartTime && hasEndTime) {
+				dailyAttendanceForm.setTrainingStartTimeHourError(true);
+				dailyAttendanceForm.setTrainingStartTimeMinuteError(true);
 				result.addError(new FieldError(result.getObjectName(), "notStartTimeError",messageUtil.getMessage("attendance.punchInEmpty")));
 			}
 //	    * 「出勤・退勤ともに未入力、中抜け時間あり」の矛盾チェック。
 			if (!hasStartTime && !hasEndTime && hasBlankTime) {
+				
+				dailyAttendanceForm.setTrainingStartTimeHourError(true);
+				dailyAttendanceForm.setTrainingStartTimeMinuteError(true);
+				dailyAttendanceForm.setTrainingEndTimeHourError(true);
+				dailyAttendanceForm.setTrainingEndTimeMinuteError(true);
+
 				result.addError(new FieldError(result.getObjectName(), "onlyBlankTimeError",messageUtil.getMessage("input.invalid", new String[] {"出勤時間"})));
 				result.addError(new FieldError(result.getObjectName(), "onlyBlankTimeError",messageUtil.getMessage("input.invalid", new String[] {"退勤時間"})));
 			}
@@ -449,6 +470,10 @@ public class StudentAttendanceService {
 						dailyAttendanceForm.getTrainingEndTimeMinute());
 				
 				if (endMinutes < startMinutes) {
+					dailyAttendanceForm.setTrainingStartTimeHourError(true);
+					dailyAttendanceForm.setTrainingStartTimeMinuteError(true);
+					dailyAttendanceForm.setTrainingEndTimeHourError(true);
+					dailyAttendanceForm.setTrainingEndTimeMinuteError(true);
 					result.addError(new FieldError(result.getObjectName(), "onlyBlankTimeError",messageUtil.getMessage("attendance.trainingTimeRange", new String[] {formattedStartTime,formattedEndTime})));
 				}
 			}
@@ -459,6 +484,12 @@ public class StudentAttendanceService {
 				int workSpanMinutes = endMinutes - startMinutes;
 				
 				if ( dailyAttendanceForm.getBlankTime() > workSpanMinutes) {
+
+					dailyAttendanceForm.setTrainingStartTimeHourError(true);
+					dailyAttendanceForm.setTrainingStartTimeMinuteError(true);
+					dailyAttendanceForm.setTrainingEndTimeHourError(true);
+					dailyAttendanceForm.setTrainingEndTimeMinuteError(true);
+					dailyAttendanceForm.setBlankTimeError(true);
 					result.addError(new FieldError(result.getObjectName(), "overBlankTimeError",messageUtil.getMessage("attendance.blankTimeError")));
 				}
 			}
