@@ -34,17 +34,17 @@
 					<thead>
 						<tr>
 							<th class="w140">日付</th>
-							<th class="w140">コース内容</th>
+							<th class="w200" colspan="2">コース内容</th>
 							<th class="w150" colspan="3">出勤</th>
 							<th class="w150" colspan="3">退勤</th>
 							<th class="w80">中抜け時間</th>
 							<th class="w70">ステータス</th>
-							<th class="w240">備考</th>
+							<th class="w140">備考</th>
 						</tr>
 					</thead>
 					<tbody>
 						<th:block th:each="dailyAttendanceForm, stat : *{attendanceForm.attendanceList}">
-							<tr>
+							<tr class="attendance-row" >
 								<th:block>
 									<input type="hidden" th:name="|attendanceList[${stat.index}].isToday|" th:value="${dailyAttendanceForm.isToday}" />
 									<input type="hidden" th:name="|attendanceList[${stat.index}].studentAttendanceId|" th:value="${dailyAttendanceForm.studentAttendanceId}" />
@@ -55,10 +55,14 @@
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
+								<!-- Task.28 定時ボタン -->
+								<td class="60">
+									<input type="button" class="btn btn-success set-time-btn" value="定時" />
+								</td>
 								<td class="w70">
 									<select 
 										th:name="|attendanceList[${stat.index}].trainingStartTimeHour|" 
-										class="form-control" 
+										class="form-control start-time-hour" 
 										th:classappend="${dailyAttendanceForm.trainingStartTimeHourError} ? 'errorInput' : ''"
 									>
 										<option th:each="trainingStartTimeHour : ${attendanceForm.trainingStartTimeHours}" th:value="${trainingStartTimeHour.key}" th:inlne="text" class="form-control" 
@@ -69,7 +73,7 @@
 								<td class="w70">
 									<select 
 										th:name="|attendanceList[${stat.index}].trainingStartTimeMinute|" 
-										class="form-control" 
+										class="form-control start-time-minute" 
 										th:classappend="${dailyAttendanceForm.trainingStartTimeMinuteError} ? 'errorInput' : ''"
 									>
 										<option th:each="trainingStartTimeMinute : ${attendanceForm.trainingStartTimeMinutes}" th:value="${trainingStartTimeMinute.key}" th:inlne="text" class="form-control" 
@@ -79,7 +83,7 @@
 								<td class="w70">
 									<select 
 										th:name="|attendanceList[${stat.index}].trainingEndTimeHour|" 
-										class="form-control" 
+										class="form-control end-time-hour" 
 										th:classappend="${dailyAttendanceForm.trainingEndTimeHourError} ? 'errorInput' : ''"
 									>
 										<option th:each="trainingEndTimeHour : ${attendanceForm.trainingEndTimeHours}" th:value="${trainingEndTimeHour.key}" th:inlne="text" class="form-control" 
@@ -90,7 +94,7 @@
 								<td class="w70">
 									<select 
 										th:name="|attendanceList[${stat.index}].trainingEndTimeMinute|" 
-										class="form-control" 
+										class="form-control end-time-minute" 
 										th:classappend="${dailyAttendanceForm.trainingEndTimeMinuteError} ? 'errorInput' : ''"
 									>
 										<option th:each="trainingEndTimeMinute : ${attendanceForm.trainingEndTimeMinutes}" th:value="${trainingEndTimeMinute.key}" th:inlne="text" class="form-control" 
@@ -139,17 +143,37 @@
 	<!-- Task.27 ダイアログの表示 scriptタグ埋め込み-->
 	<script type="text/javascript" th:inline="javascript">
 		document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("attendanceForm");
-  if (!form) return;
-
-  form.addEventListener("submit", function (event) {
-    const isConfirmed = window.confirm("更新します。よろしいですか？");
-
-    if (!isConfirmed) {
-      event.preventDefault();
-    }
-  });
-});
+			const form = document.getElementById("attendanceForm");
+			if (!form) return;
+			
+			form.addEventListener("submit", function (event) {
+			const isConfirmed = window.confirm("更新します。よろしいですか？");
+				
+				if (!isConfirmed) {
+					event.preventDefault();
+				}
+			});
+ 		});
+  
+		// Task.28 ボタンに設定する処理
+		document.addEventListener("DOMContentLoaded", function() {
+			const setTimeBtns = document.querySelectorAll(".set-time-btn");
+			// ボタン情報取得しつつaddEventListener付与
+			setTimeBtns.forEach(function (btn) {
+				btn.addEventListener("click", function() {
+					const rowEl = btn.closest(".attendance-row");
+					const startTimeHourSelect = rowEl.querySelector(".start-time-hour");
+					const startTimeMinuteSelect = rowEl.querySelector(".start-time-minute");
+					const endTimeHourSelect = rowEl.querySelector(".end-time-hour");
+					const endTimeMinuteSelect = rowEl.querySelector(".end-time-minute");
+					// 各セレクトボックスに自動設定
+					startTimeHourSelect.value = "9";
+					startTimeMinuteSelect.value = "0";
+					endTimeHourSelect.value = "18";
+					endTimeMinuteSelect.value = "0";
+				});
+			});
+		  });
 		</script>
 </body>
 </html>
