@@ -1,6 +1,7 @@
 package jp.co.sss.lms.util;
 
 import java.text.ParseException;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
@@ -131,7 +132,77 @@ public class AttendanceUtil {
 		}
 		return map;
 	}
-
+	
+	/**
+	 * 時間のプルダウンマップを生成
+	 * 
+	 * @author 牧山聖冬 - Task.26
+	 * @return 1時間刻みの時間(0～23)
+	 */
+	public LinkedHashMap<Integer, String> getHourMap() {
+		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+		map.put(null, "");
+		for (int i = 0; i < 24;) {
+			String hour;
+				hour = String.format("%02d", i);
+				map.put(i, hour);
+				
+				i = i + 1;
+		}
+		return map;
+	}
+	
+	/**
+	 * 分のプルダウンマップを生成
+	 * 
+	 * @author 牧山聖冬 - Task.26
+	 * @return 1分刻みの時間(0～59)
+	 */
+	public LinkedHashMap<Integer, String> getMinuteMap() {
+		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+		map.put(null, "");
+		for (int i = 0; i < 60;) {
+			String hour;
+				hour = String.format("%02d", i);
+				map.put(i, hour);
+				
+				i = i + 1;
+		}
+		return map;
+	}
+	
+	/**
+	 * 時間(時)の切り出し
+	 * 
+	 * @author 牧山聖冬 - Task.26
+	 * @param time
+	 * @return Integer 切り出した時間(時)
+	 */
+	public Integer getHour(String time) {
+		if (time == null || time.isEmpty()) {
+			return null;
+		}
+		LocalTime parsedTime = LocalTime.parse(time);
+		Integer hour = parsedTime.getHour();
+		return hour;
+	}
+	
+	/**
+	 * 時間(分)の切り出し
+	 * 
+	 * @author 牧山聖冬 - Task.26
+	 * @param time 
+	 * @return Integer 切り出した時間(分)
+	 */
+	public Integer getMinute(String time) {
+		if (time == null || time.isEmpty()) {
+			return null;
+		}
+		LocalTime parsedTime = LocalTime.parse(time);
+		Integer minute = parsedTime.getMinute();
+		return minute;
+	}
+	
 	/**
 	 * 研修日の判定
 	 * 

@@ -14,6 +14,7 @@ import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
+import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
 
 /**
@@ -27,6 +28,8 @@ public class AttendanceController {
 
 	@Autowired
 	private StudentAttendanceService studentAttendanceService;
+	@Autowired
+	private AttendanceUtil attendanceUtil;
 	@Autowired
 	private LoginUserDto loginUserDto;
 
@@ -46,6 +49,16 @@ public class AttendanceController {
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
+
+		// 牧山聖冬 - Task.25 
+		// 過去日の勤怠未入力チェック
+		try {
+				Boolean isNotEnterCheck = studentAttendanceService.notEnterCheck();
+				// 結果を画面へ連携
+				model.addAttribute("isNotEnterCheck", isNotEnterCheck);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 		return "attendance/detail";
 	}
@@ -130,8 +143,22 @@ public class AttendanceController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
-	public String complete(AttendanceForm attendanceForm, Model model, BindingResult result)
+	public String complete(AttendanceForm attendanceForm, BindingResult result, Model model)
 			throws ParseException {
+		studentAttendanceService.updateInputCheck(attendanceForm, result);
+		
+		if (result.hasErrors()) {
+			//プルダウン用の時間マップをセット
+			attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
+			attendanceForm.setTrainingStartTimeHours(attendanceUtil.getHourMap());
+			attendanceForm.setTrainingEndTimeHours(attendanceUtil.getHourMap());
+			attendanceForm.setTrainingStartTimeMinutes(attendanceUtil.getMinuteMap());
+			attendanceForm.setTrainingEndTimeMinutes(attendanceUtil.getMinuteMap());
+
+			model.addAttribute("attendanceForm", attendanceForm);
+			//・"勤怠更新画面"へ戻る
+			return "attendance/update";
+		}
 
 		// 更新
 		String message = studentAttendanceService.update(attendanceForm);
