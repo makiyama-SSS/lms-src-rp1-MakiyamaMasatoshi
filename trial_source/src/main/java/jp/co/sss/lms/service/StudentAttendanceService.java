@@ -369,6 +369,9 @@ public class StudentAttendanceService {
 	}
 
 	/**
+	 * Task.25 過去日の勤怠に未入力があるかチェック
+	 * 
+	 * @author 牧山聖冬
 	 * @return Boolean 過去の勤怠に未入力があるか
 	 * @throws ParseException
 	 */

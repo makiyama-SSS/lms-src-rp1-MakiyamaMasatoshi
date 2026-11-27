@@ -50,6 +50,7 @@ public class AttendanceController {
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
 
+		// 牧山聖冬 - Task.25 
 		// 過去日の勤怠未入力チェック
 		try {
 				Boolean isNotEnterCheck = studentAttendanceService.notEnterCheck();
