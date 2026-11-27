@@ -26,6 +26,7 @@ public class AttendanceForm {
 	/** 退校日 */
 	private String leaveDate;
 	/** 退校日（表示用） */
+	// 牧山聖冬 - Task.26 プルダウン用出退勤時間
 	private String dispLeaveDate;
 	/** 出勤時間（時プルダウン用） */
 	private LinkedHashMap<Integer, String> trainingStartTimeHours;
