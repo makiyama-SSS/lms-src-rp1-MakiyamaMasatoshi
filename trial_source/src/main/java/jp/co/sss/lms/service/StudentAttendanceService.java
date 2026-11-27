@@ -223,6 +223,7 @@ public class StudentAttendanceService {
 		attendanceForm.setLmsUserId(loginUserDto.getLmsUserId());
 		attendanceForm.setUserName(loginUserDto.getUserName());
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
+		// 牧山聖冬 - Task.26
 		attendanceForm.setTrainingStartTimeHours(attendanceUtil.getHourMap());
 		attendanceForm.setTrainingStartTimeMinutes(attendanceUtil.getMinuteMap());
 		attendanceForm.setTrainingEndTimeHours(attendanceUtil.getHourMap());
@@ -315,6 +316,7 @@ public class StudentAttendanceService {
 			}
 			tStudentAttendance.setLmsUserId(lmsUserId);
 			tStudentAttendance.setAccountId(loginUserDto.getAccountId());
+			// 牧山聖冬 - Task.26 退勤時刻
 			TrainingTime trainingStartTime = new TrainingTime(null);
 			if (dailyAttendanceForm.getTrainingStartTimeHour() != null &&
 					dailyAttendanceForm.getTrainingStartTimeMinute() != null) {
@@ -324,6 +326,7 @@ public class StudentAttendanceService {
 						String.valueOf(dailyAttendanceForm.getTrainingStartTimeMinute()));
 			}
 			tStudentAttendance.setTrainingStartTime(trainingStartTime.getFormattedString());
+			// 牧山聖冬 - Task.26 退勤時刻
 			TrainingTime trainingEndTime = new TrainingTime(null);
 			trainingEndTime = new TrainingTime(dailyAttendanceForm.getTrainingEndTime());
 			if (dailyAttendanceForm.getTrainingEndTimeHour() != null &&

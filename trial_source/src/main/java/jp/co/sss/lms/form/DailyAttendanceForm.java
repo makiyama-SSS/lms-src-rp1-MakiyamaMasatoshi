@@ -18,12 +18,14 @@ public class DailyAttendanceForm {
 	private String trainingDate;
 	/** 出勤時間 */
 	private String trainingStartTime;
+	// 牧山聖冬 - Task.26 出勤時間の時分の追加 
 	/** 出勤時間（時） */
 	private Integer trainingStartTimeHour;
 	/** 出勤時間（分） */
 	private Integer trainingStartTimeMinute;
 	/** 退勤時間 */
 	private String trainingEndTime;
+	// 牧山聖冬 - Task.26 退勤時間の時分の追加
 	/** 退勤時間（時） */
 	private Integer trainingEndTimeHour;
 	/** 退勤時間（分） */
