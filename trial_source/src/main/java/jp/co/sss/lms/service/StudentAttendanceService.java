@@ -316,7 +316,6 @@ public class StudentAttendanceService {
 			tStudentAttendance.setLmsUserId(lmsUserId);
 			tStudentAttendance.setAccountId(loginUserDto.getAccountId());
 			TrainingTime trainingStartTime = new TrainingTime(null);
-			// TODO: UXの問題あり（Task.27対応後解消予定のため、詳細は記載しない）
 			if (dailyAttendanceForm.getTrainingStartTimeHour() != null &&
 					dailyAttendanceForm.getTrainingStartTimeMinute() != null) {
 				trainingStartTime = new TrainingTime(
@@ -327,7 +326,6 @@ public class StudentAttendanceService {
 			tStudentAttendance.setTrainingStartTime(trainingStartTime.getFormattedString());
 			TrainingTime trainingEndTime = new TrainingTime(null);
 			trainingEndTime = new TrainingTime(dailyAttendanceForm.getTrainingEndTime());
-			// TODO: UXの問題あり（Task.27対応後解消予定のため、詳細は記載しない）
 			if (dailyAttendanceForm.getTrainingEndTimeHour() != null &&
 					dailyAttendanceForm.getTrainingEndTimeMinute() != null) {
 				trainingEndTime = new TrainingTime(
