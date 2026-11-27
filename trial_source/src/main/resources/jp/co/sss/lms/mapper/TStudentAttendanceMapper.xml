@@ -88,7 +88,7 @@
 	
 	<!-- 勤怠情報（受講生入力）未入力件数取得 -->
 	
-	<select id="notEnterCount" parameterType="jp.co.sss.lms.entity.TStudentAttendance">
+	<select id="notEnterCount" parameterType="jp.co.sss.lms.entity.TStudentAttendance" resultType="Integer">
 		SELECT COUNT(*)
 		FROM t_student_attendance
 		WHERE lms_user_id = #{lmsUserId}
